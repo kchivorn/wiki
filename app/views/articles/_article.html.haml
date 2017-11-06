@@ -1,2 +1,5 @@
-%p= article.title
-%p= article.content
+%h2= article.title
+%p= truncate(article.content, length: 200)
+%p
+  Published at
+  = Time.now.strftime("%b %d, %Y")
