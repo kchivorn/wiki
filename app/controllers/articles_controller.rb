@@ -2,7 +2,12 @@ class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show]
   def index
-    @articles = Article.all.order(created_at: :desc)
+    if params[:category].blank?
+      @articles = Article.all.order(created_at: :desc)
+    else
+      category_id = Category.find_by(name: params[:category]).id
+      @articles = Article.where(category_id: category_id).order(created_at: :desc)
+    end
   end
 
   def show
@@ -41,10 +46,10 @@ class ArticlesController < ApplicationController
   private
 
   def article_params
-    params.require(:article).permit(:title, :content)
+    params.require(:article).permit(:title, :content, :category_id)
   end
 
   def set_article
-    @article = current_user.articles.find(params[:id])
+    @article = Article.find(params[:id])
   end
 end

@@ -9,3 +9,8 @@
     - flash.each do |name, msg|
       = content_tag :div, msg, class: "alert alert-#{name}"
     = yield
+
+    %ul
+      %li= link_to "All Articles", root_path
+      - Category.all.each do |category|
+        %li= link_to category.name, articles_path(category: category.name)
